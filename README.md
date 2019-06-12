@@ -1,2 +1,1 @@
-# wordCounterApp
-App to count words from a file
+# WordCounterApp by Víctor M. Montes Llorente
