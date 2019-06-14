@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vmmontes.wordcounterapp.R
 import com.vmmontes.wordcounterapp.presentation.model.WordViewModel
+import com.vmmontes.wordcounterapp.utiles.getCapitalizeFirstCharacter
 import kotlinx.android.synthetic.main.row_word.view.*
 
 
@@ -23,7 +24,8 @@ class ReaderAdapter(
         val viewHolder: RecyclerView.ViewHolder
         viewHolder = MoviewViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.row_word, parent, false))
+                .inflate(R.layout.row_word, parent, false)
+        )
 
         return viewHolder
     }
@@ -31,8 +33,17 @@ class ReaderAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val word = wordModel[position]
         val viewHolder = holder as MoviewViewHolder
-        viewHolder.tvWord.text = word.word
-        viewHolder.tvRepeatTimes.text = word.repeatTimes.toString()
+        viewHolder.tvWord.text = getCapitalizeFirstCharacter(word.word)
+        viewHolder.tvRepeatTimes.text = getRepeatTimesText(word.repeatTimes)
+    }
+
+    private fun getRepeatTimesText(repeatTimes: Int): String {
+        val textToReplace = if (repeatTimes > 1) {
+            context.getString(R.string.appear_times)
+        } else {
+            context.getString(R.string.appear_once)
+        }
+        return textToReplace.replace("%1", repeatTimes.toString())
     }
 
     override fun getItemCount(): Int {

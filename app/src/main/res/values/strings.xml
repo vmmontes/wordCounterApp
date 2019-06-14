@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">WordCounterApp</string>
+    <string name="appear_times">aparece %1 veces</string>
+    <string name="appear_once">aparece %1 vez</string>
 </resources>
