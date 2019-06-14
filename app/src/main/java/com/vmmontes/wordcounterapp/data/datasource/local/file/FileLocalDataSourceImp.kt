@@ -12,7 +12,7 @@ class FileLocalDataSourceImp(
         val text = StringBuilder()
         try {
             val reader = BufferedReader(
-                InputStreamReader(context.assets.open("file.txt"), "UTF-8")
+                InputStreamReader(context.assets.open("bigFile.txt"), "UTF-8")
             )
             var canRead = true
 
