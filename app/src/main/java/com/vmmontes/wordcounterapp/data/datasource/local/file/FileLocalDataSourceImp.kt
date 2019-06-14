@@ -8,11 +8,11 @@ import java.io.InputStreamReader
 class FileLocalDataSourceImp(
     val context: Context
 ): FileLocalDataSource {
-    override fun getText(): String {
+    private fun getText(fileName: String): String {
         val text = StringBuilder()
         try {
             val reader = BufferedReader(
-                InputStreamReader(context.assets.open("bigFile.txt"), "UTF-8")
+                InputStreamReader(context.assets.open(fileName), "UTF-8")
             )
             var canRead = true
 
@@ -32,4 +32,10 @@ class FileLocalDataSourceImp(
         }
         return text.toString()
     }
+
+    override fun getTextFromBigFile(): String =
+        getText("bigFile.txt")
+
+    override fun getTextFromSmallFile(): String =
+        getText("smallFile.txt")
 }

@@ -17,10 +17,18 @@ class GetWordsUseCase(
         const val ONE_TIME = 1
     }
 
-    fun execute(): Observable<MutableList<WordViewModel>> {
+    enum class FILE_TYPE{
+        BIG_FILE, SMALL_FILE
+    }
+
+    fun execute(filetype: GetWordsUseCase.FILE_TYPE): Observable<MutableList<WordViewModel>> {
        val observable = Observable.create<MutableList<WordViewModel>> {
             val wordsList = mutableListOf<WordViewModel>()
-            val textList = wordsRepository.getTextFromFile().replace(LINE_BREAK, SPACE).split(SPACE)
+           val textList = (if (filetype == FILE_TYPE.BIG_FILE) {
+               wordsRepository.getTextFromBigFile()
+           } else {
+               wordsRepository.getTextFromSmallFile()
+           }).replace(LINE_BREAK, SPACE).split(SPACE)
             for (word in textList) {
                 val cleanWord = getCleanWordUseCase.execute(word)
                 if (!isEmptyText(cleanWord)) {

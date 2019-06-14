@@ -1,10 +1,7 @@
 package com.vmmontes.wordcounterapp
 
 import android.app.Application
-import com.vmmontes.wordcounterapp.di.ApplicationComponent
-import com.vmmontes.wordcounterapp.di.ApplicationModule
-import com.vmmontes.wordcounterapp.di.DaggerApplicationComponent
-import com.vmmontes.wordcounterapp.di.ReaderModule
+import com.vmmontes.wordcounterapp.di.*
 
 class WordCounterApp: Application() {
     val component : ApplicationComponent by lazy {
@@ -12,6 +9,7 @@ class WordCounterApp: Application() {
             .builder()
             .applicationModule(ApplicationModule(this))
             .readerModule(ReaderModule())
+            .selectorReaderModule(SelectorReaderModule())
             .build()
     }
 

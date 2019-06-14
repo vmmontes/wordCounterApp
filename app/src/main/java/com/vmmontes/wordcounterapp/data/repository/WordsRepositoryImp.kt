@@ -9,8 +9,11 @@ class WordsRepositoryImp(
     val wordsLocalDataSource: WordsLocalDataSource
 ): WordsRepository {
 
-    override fun getTextFromFile(): String =
-        textLocalDataSource.getText()
+    override fun getTextFromBigFile(): String =
+        textLocalDataSource.getTextFromBigFile()
+
+    override fun getTextFromSmallFile(): String =
+        textLocalDataSource.getTextFromSmallFile()
 
     override fun getWordsList(): MutableList<WordViewModel> =
         wordsLocalDataSource.getWordsList()

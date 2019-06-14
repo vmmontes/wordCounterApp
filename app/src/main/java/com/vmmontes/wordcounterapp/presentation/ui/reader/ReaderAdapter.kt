@@ -1,4 +1,4 @@
-package com.vmmontes.wordcounterapp.presentation.ui
+package com.vmmontes.wordcounterapp.presentation.ui.reader
 
 import android.content.Context
 import android.view.LayoutInflater

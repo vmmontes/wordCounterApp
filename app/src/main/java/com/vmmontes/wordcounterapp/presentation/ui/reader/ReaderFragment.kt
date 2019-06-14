@@ -1,4 +1,4 @@
-package com.vmmontes.wordcounterapp.presentation.ui
+package com.vmmontes.wordcounterapp.presentation.ui.reader
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,7 +20,11 @@ class ReaderFragment : BaseFragment(), ReaderView {
 
     companion object {
         @JvmStatic
-        fun newInstance() = ReaderFragment()
+        fun newInstance(typeFile: String) = ReaderFragment().apply {
+            arguments = Bundle().apply {
+                putString(ReaderActivity.TYPE_FILE, typeFile)
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +44,13 @@ class ReaderFragment : BaseFragment(), ReaderView {
         getApplication().component.inject(this)
         presenter.onAttach(this)
         initWordsList()
-        presenter.onViewReady()
+        arguments?.getString(ReaderActivity.TYPE_FILE)?.also {typeFile -> String()
+            if (typeFile == ReaderActivity.BIG_FILE) {
+                presenter.onViewReadyToShowTextFromBigFile()
+            } else {
+                presenter.onViewReadyToShowTextFromSmallFile()
+            }
+        }
     }
 
     private fun initWordsList(){
