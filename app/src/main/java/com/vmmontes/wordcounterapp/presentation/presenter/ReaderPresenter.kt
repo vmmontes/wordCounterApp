@@ -6,7 +6,7 @@ import com.vmmontes.wordcounterapp.kernel.presenter.RxPresenter
 import com.vmmontes.wordcounterapp.presentation.ui.reader.ReaderView
 
 class ReaderPresenter(
-    val readFileUseCase: GetWordsUseCase,
+    val getWordsUseCase: GetWordsUseCase,
     val getLocalWordsUseCase: GetLocalWordsUseCase
 ): RxPresenter<ReaderView>() {
 
@@ -22,7 +22,7 @@ class ReaderPresenter(
         val words = getLocalWordsUseCase.execute()
         if (words.isEmpty()) {
             val fileType = getTypeAction(isBigFile)
-            addDisposable(readFileUseCase.execute(fileType)
+            addDisposable(getWordsUseCase.execute(fileType)
                 .subscribe { wordsViewModel ->
                     view?.showWords(wordsViewModel)
                 })
