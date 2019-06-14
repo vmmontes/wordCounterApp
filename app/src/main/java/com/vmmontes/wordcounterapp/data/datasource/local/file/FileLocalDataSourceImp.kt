@@ -1,16 +1,14 @@
-package com.vmmontes.wordcounterapp.data.repository
+package com.vmmontes.wordcounterapp.data.datasource.local.file
 
 import android.content.Context
-import android.os.Environment
-import com.vmmontes.wordcounterapp.WordCounterApp
-import java.io.*
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
 
-
-class FileRepositoryImp(
+class FileLocalDataSourceImp(
     val context: Context
-): FileRepository {
-
-    override fun getTextFromFile(): String {
+): FileLocalDataSource {
+    override fun getText(): String {
         val text = StringBuilder()
         try {
             val reader = BufferedReader(
