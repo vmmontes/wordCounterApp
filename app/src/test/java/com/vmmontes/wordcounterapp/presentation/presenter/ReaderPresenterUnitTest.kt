@@ -1,11 +1,10 @@
 package com.vmmontes.wordcounterapp.presentation.presenter
 
-import com.vmmontes.wordcounterapp.domain.usecase.CleanLocalWordsUseCase
 import com.vmmontes.wordcounterapp.domain.usecase.GetLocalWordsUseCase
 import com.vmmontes.wordcounterapp.domain.usecase.GetWordsUseCase
+import com.vmmontes.wordcounterapp.kernel.rx.TrampolineSchedulerProvider
 import com.vmmontes.wordcounterapp.presentation.model.WordViewModel
 import com.vmmontes.wordcounterapp.presentation.ui.reader.ReaderView
-import com.vmmontes.wordcounterapp.presentation.ui.selectorReader.SelectorReaderView
 import io.reactivex.Observable
 import org.junit.Before
 import org.junit.Test
@@ -16,6 +15,7 @@ class ReaderPresenterUnitTest {
     private lateinit var mockGetLocalWordsUseCase: GetLocalWordsUseCase
     private lateinit var view: ReaderView
     private lateinit var presenter: ReaderPresenter
+    private var schedulerProvider = TrampolineSchedulerProvider()
 
     @Before
     fun setup() {
@@ -25,28 +25,50 @@ class ReaderPresenterUnitTest {
         presenter = ReaderPresenter(mockGetWordsUseCase, mockGetLocalWordsUseCase)
     }
 
-   /* private fun getData():
-    fun getData(): Observable<String> {
-        return dummyService.getData()
+    private fun getMockObservable(words: MutableList<WordViewModel>): Observable<MutableList<WordViewModel>> {
+        return Observable.create<MutableList<WordViewModel>> {
+            for(i in 0..2){
+                it.onNext(words)
+            }
+        }.subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
     }
 
     @Test
-    fun `should execute right worklow when call onViewReadyToShowTextFromBigFile and local list of words not contians words`() {
+    fun `should execute showWords with filWord three times`() {
         // arrange
-        val wordsListVoid = mutableListOf<WordViewModel>()
-        val wordsListFill = mutableListOf<WordViewModel>()
-        wordsListFill.add(WordViewModel("prueba", 100))
-
-        val dummyService = Mockito.mock(Dummy)
         presenter.onAttach(view)
-        Mockito.`when`(mockGetLocalWordsUseCase.execute()).thenReturn(wordsListVoid)
-        Mockito.`when`(mockGetWordsUseCase.execute(GetWordsUseCase.FILE_TYPE.BIG_FILE)).thenReturn(Observable<MutableList<WordViewModel>>())
+        val localWords = mutableListOf<WordViewModel>()
+        val fileWords = mutableListOf<WordViewModel>()
+        fileWords.add(WordViewModel("Prueba", 2))
+        Mockito.`when`(mockGetLocalWordsUseCase.execute())
+            .thenReturn(localWords)
+        Mockito.`when`(mockGetWordsUseCase.execute(GetWordsUseCase.FILE_TYPE.BIG_FILE))
+            .thenReturn(getMockObservable(fileWords))
 
-        // act
+        //act
         presenter.onViewReadyToShowTextFromBigFile()
 
         // assert
-        Mockito.verify(view, Mockito.times(1)).showWords()
-        Mockito.verify(view, Mockito.times(0)).openReaderViewToShowTextFromBigFile()
-    }*/
+        Mockito.verify(view, Mockito.times(3)).showWords(fileWords)
+        Mockito.verify(view, Mockito.times(0)).showWords(localWords)
+    }
+
+    @Test
+    fun `should execute showWords with localWords three times`() {
+        // arrange
+        presenter.onAttach(view)
+        val localWords = mutableListOf<WordViewModel>()
+        localWords.add(WordViewModel("Prueba", 2))
+        val fileWords = mutableListOf<WordViewModel>()
+        Mockito.`when`(mockGetLocalWordsUseCase.execute())
+            .thenReturn(localWords)
+
+        //act
+        presenter.onViewReadyToShowTextFromBigFile()
+
+        // assert
+        Mockito.verify(view, Mockito.times(0)).showWords(fileWords)
+        Mockito.verify(view, Mockito.times(1)).showWords(localWords)
+    }
 }

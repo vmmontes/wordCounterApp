@@ -3,6 +3,7 @@ package com.vmmontes.wordcounterapp.domain.usecase
 import com.vmmontes.wordcounterapp.data.repository.WordsRepository
 import com.vmmontes.wordcounterapp.kernel.constants.LINE_BREAK
 import com.vmmontes.wordcounterapp.kernel.constants.SPACE
+import com.vmmontes.wordcounterapp.kernel.rx.SchedulerProvider
 import com.vmmontes.wordcounterapp.presentation.model.WordViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -11,7 +12,8 @@ import io.reactivex.schedulers.Schedulers
 class GetWordsUseCase(
     val wordsRepository: WordsRepository,
     val getCleanWordUseCase: GetCleanWordUseCase,
-    val setLocalWords: SetLocalWordsUseCase
+    val setLocalWords: SetLocalWordsUseCase,
+    val scheluder: SchedulerProvider
 ) {
     companion object {
         const val ONE_TIME = 1
@@ -42,8 +44,8 @@ class GetWordsUseCase(
                     setLocalWords.execute(wordsList)
                 }
             }
-        }   .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        }   .subscribeOn(scheluder.io())
+            .observeOn(scheluder.ui())
 
         return observable
     }

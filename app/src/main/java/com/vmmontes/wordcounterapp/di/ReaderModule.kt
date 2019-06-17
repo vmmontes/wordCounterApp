@@ -11,6 +11,7 @@ import com.vmmontes.wordcounterapp.domain.usecase.GetCleanWordUseCase
 import com.vmmontes.wordcounterapp.domain.usecase.GetLocalWordsUseCase
 import com.vmmontes.wordcounterapp.domain.usecase.GetWordsUseCase
 import com.vmmontes.wordcounterapp.domain.usecase.SetLocalWordsUseCase
+import com.vmmontes.wordcounterapp.kernel.rx.SchedulerProvider
 import com.vmmontes.wordcounterapp.presentation.presenter.ReaderPresenter
 import dagger.Module
 import dagger.Provides
@@ -46,10 +47,14 @@ class ReaderModule {
     fun provideCleanWord() = GetCleanWordUseCase()
 
     @Provides
+    fun provideScheluder() = SchedulerProvider()
+
+    @Provides
     fun provideReadFileUseCase(fileRepository: WordsRepository,
                                getCleanWordUseCase: GetCleanWordUseCase,
-                               setLocalWordsUseCase: SetLocalWordsUseCase)
-            = GetWordsUseCase(fileRepository, getCleanWordUseCase, setLocalWordsUseCase)
+                               setLocalWordsUseCase: SetLocalWordsUseCase,
+                               schedulerProvider: SchedulerProvider)
+            = GetWordsUseCase(fileRepository, getCleanWordUseCase, setLocalWordsUseCase, schedulerProvider)
 
     @Provides
     fun provideReaderPresenter(readFileUseCase: GetWordsUseCase,
