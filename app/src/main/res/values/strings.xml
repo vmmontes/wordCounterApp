@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">WordCounterApp</string>
+    <string name="appear_times">aparece %1 veces</string>
+    <string name="appear_once">aparece %1 vez</string>
+    <string name="read_big_file">Leer archivo grande</string>
+    <string name="read_small_file">Leer archivo pequeño</string>
 </resources>
