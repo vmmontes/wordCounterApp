@@ -1,8 +1,8 @@
 ext {
     //App variables
     applicationIdValue = "com.vmmontes.wordcounterapp"
-    versionCodeValue = 010000
-    versionNameValue = "1.0.0"
+    versionCodeValue = 010001
+    versionNameValue = "1.0.1"
 
     //Android project
     compileSdkVersionValue = 28
