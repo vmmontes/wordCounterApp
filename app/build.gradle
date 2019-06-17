@@ -9,13 +9,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion compileSdkVersionValue
     defaultConfig {
-        applicationId "com.vmmontes.wordcounterapp"
-        minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        applicationId applicationIdValue
+        minSdkVersion minSdkVersionValue
+        targetSdkVersion targetSdkVersionValue
+        versionCode versionCodeValue
+        versionName versionNameValue
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
